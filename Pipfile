@@ -1,0 +1,13 @@
+[packages]
+# TODO: fix prod versions
+fastapi = "*"
+uvicorn = "*"
+asyncpg = "*"
+SQLAlchemy = "*"
+yoyo-migrations = "*"
+
+[dev-packages]
+pytest = "*"
+
+[requires]
+python_version = "3.9"
