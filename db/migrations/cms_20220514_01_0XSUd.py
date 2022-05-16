@@ -14,7 +14,7 @@ steps = [
             title varchar(256) not null,
             body text not null,
             created_at timestamp default now() not null,
-            modified_at timestamp default now() not null,
+            modified_at timestamp default now() not null
         );
         """,
         rollback="""

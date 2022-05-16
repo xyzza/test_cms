@@ -3,7 +3,6 @@ import datetime
 from .base import database_meta
 from .base import sa
 
-
 # article table
 Article = sa.Table(
     "article",

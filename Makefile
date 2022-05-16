@@ -1,5 +1,5 @@
 .PHONY: run migrate db build lint test
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := test_compose
 
 
 run:
@@ -10,14 +10,17 @@ migrate:
 	@yoyo apply -d ${DB_DSN}
 
 db:
-	@docker-compose -f ci-cd/docker-compose.yml up -d db
+	@docker-compose up -d db
 
 build:
 	@echo "building..."
-	@docker-compose -f ci-cd/docker-compose.yml build app
+	@docker-compose build app
 
-test:
+test_compose:
+	@docker-compose up --build
+
+test_local:
 	@echo "testing..."
-
+	@pytest -sv
 
 # TODO: isort, flake
