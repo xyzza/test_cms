@@ -23,4 +23,7 @@ test_local:
 	@echo "testing..."
 	@pytest -sv
 
-# TODO: isort, flake
+sort:
+	@isort .
+
+# TODO: flake

@@ -1,7 +1,5 @@
 import pytest
 
-pytestmark = pytest.mark.asyncio
-
 
 async def test_get_single(not_authorized_client, article):
     response = await not_authorized_client.get(f"/v1/articles/{article['id']}")
@@ -14,6 +12,11 @@ async def test_delete_article(authorized_client, not_authorized_client, article)
     response = await authorized_client.delete(f"/v1/articles/{article['id']}")
     assert response.status_code == 204
     response = await not_authorized_client.get(f"/v1/articles/{article['id']}")
+    assert response.status_code == 404
+
+
+async def test_delete_non_existing_article(authorized_client):
+    response = await authorized_client.delete(f"/v1/articles/1")
     assert response.status_code == 404
 
 
@@ -35,6 +38,14 @@ async def test_update_article(authorized_client, article):
     assert response.status_code == 200
     article = response.json()
     assert article["title"] == new_title
+
+
+async def test_update_non_existing_article(authorized_client):
+    new_title = "Hello World"
+    response = await authorized_client.patch(
+        f"/v1/articles/1", json={"title": new_title}
+    )
+    assert response.status_code == 404
 
 
 @pytest.mark.parametrize(

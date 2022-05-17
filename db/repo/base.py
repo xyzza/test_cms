@@ -57,7 +57,7 @@ class Repo:
 
     async def insert_row(
         self, table: str, connection, values: Dict[str, Any], returning: List[sa.column]
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[sa.engine.Row]:
         expression = sa.insert(table).values(**values)
         if returning:
             expression = expression.returning(*returning)
@@ -66,14 +66,14 @@ class Repo:
         if result:
             return [x for x in result][0]
 
-    async def update_row(
+    async def update_rows(
         self,
         table: str,
         connection: sa.engine.Connection,
         values: Dict[str, Any],
         where: sa.sql.expression,
         returning: List[sa.column],
-    ) -> Optional[List[sa.engine.Row]]:
+    ) -> List[sa.engine.Row]:
         expression = sa.update(table).values(**values)
         if where:
             expression = expression.where(where)
@@ -81,8 +81,7 @@ class Repo:
             expression = expression.returning(*returning)
         result = await connection.execute(expression)
         await connection.commit()
-        if result:
-            return [x for x in result][0]
+        return [x for x in result]
 
     async def delete_rows(
         self,
@@ -90,13 +89,13 @@ class Repo:
         connection: sa.engine.Connection,
         where: sa.sql.expression,
         returning: List[sa.column],
-    ) -> List[int]:
+    ) -> List[sa.engine.Row]:
         expression = sa.delete(table).where(where)
         if returning:
             expression = expression.returning(*returning)
         result = await connection.execute(expression)
         await connection.commit()
-        return result
+        return result.fetchall()
 
     def text_filter(self, column_name: str, column_value: str) -> sa.sql.expression:
         return sa.column(column_name).ilike(f"%{column_value}%")

@@ -3,8 +3,8 @@ from typing import Callable
 from fastapi import Depends
 from fastapi import FastAPI
 
-from db.repo.utils import ArticleRepo
-from db.repo.utils import article_repo
+from db.repo.crud import ArticleRepo
+from db.repo.crud import article_repo
 
 from .api.routers import article_router
 from .config import settings

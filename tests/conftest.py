@@ -11,7 +11,7 @@ from yoyo import read_migrations
 from app.config import settings
 from app.server import init_app
 from db import migrations
-from db.repo.utils import article_repo
+from db.repo.crud import article_repo
 
 _MIGRATIONS_PATH = os.path.dirname(os.path.abspath(migrations.__file__))
 _DRIVER_SYNC = "postgresql"

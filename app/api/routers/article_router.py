@@ -54,8 +54,8 @@ async def read_articles(
 )
 async def read_article(article_id: int):
     try:
-        row, *_ = await article_model.get_one(article_id=article_id)
-    except (IndexError, ValueError):
+        row = await article_model.get_one(article_id=article_id)
+    except article_model.DoesNotExists:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
     return row
 
@@ -69,7 +69,11 @@ async def read_article(article_id: int):
     dependencies=[Depends(get_token_header)],
 )
 async def update_article(article_id: int, article: NonExistingArticleOptional):
-    return await article_model.update_one(article_id=article_id, **article.dict())
+    try:
+        row = await article_model.update_one(article_id=article_id, **article.dict())
+    except article_model.DoesNotExists:
+        raise HTTPException(status_code=404, detail=NOT_FOUND)
+    return row
 
 
 @router.delete(
@@ -81,6 +85,7 @@ async def update_article(article_id: int, article: NonExistingArticleOptional):
     dependencies=[Depends(get_token_header)],
 )
 async def delete_article(article_id: int):
-    deleted_id = await article_model.delete_one(article_id=article_id)
-    if not deleted_id:
+    try:
+        await article_model.delete_one(article_id=article_id)
+    except article_model.DoesNotExists:
         raise HTTPException(status_code=404, detail=NOT_FOUND)
