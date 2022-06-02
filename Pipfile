@@ -11,6 +11,7 @@ pytest = "*"
 httpx = "*"
 pytest-asyncio = "*"
 isort = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.9"

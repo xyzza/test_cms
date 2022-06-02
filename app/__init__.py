@@ -1,1 +1,1 @@
-from .server import app as server
+from .server import app as server  # noqa: F401

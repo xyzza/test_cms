@@ -1,6 +1,5 @@
 from typing import Callable
 
-from fastapi import Depends
 from fastapi import FastAPI
 
 from db.repo.crud import ArticleRepo
@@ -8,12 +7,10 @@ from db.repo.crud import article_repo
 
 from .api.routers import article_router
 from .config import settings
-from .dependencies import get_token_header
 
 
 def init_app(dsn: str, repo: ArticleRepo):
     app = FastAPI(
-        # dependencies=[Depends(get_token_header)],
         responses={
             403: {"description": "Operation forbidden"},
         },

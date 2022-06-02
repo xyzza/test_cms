@@ -19,11 +19,13 @@ build:
 test_compose:
 	@docker-compose up --build
 
-test_local:
+test_local: lint
 	@echo "testing..."
 	@pytest -sv
 
 sort:
 	@isort .
 
-# TODO: flake
+lint:
+	@echo "checking linters..."
+	@flake8

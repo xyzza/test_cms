@@ -16,13 +16,13 @@ async def test_delete_article(authorized_client, not_authorized_client, article)
 
 
 async def test_delete_non_existing_article(authorized_client):
-    response = await authorized_client.delete(f"/v1/articles/1")
+    response = await authorized_client.delete("/v1/articles/1")
     assert response.status_code == 404
 
 
 async def test_insert_article(authorized_client):
     response = await authorized_client.post(
-        f"/v1/articles/", json={"title": "Adventure", "body": "Time!"}
+        "/v1/articles/", json={"title": "Adventure", "body": "Time!"}
     )
     assert response.status_code == 201
     article = response.json()
@@ -43,7 +43,7 @@ async def test_update_article(authorized_client, article):
 async def test_update_non_existing_article(authorized_client):
     new_title = "Hello World"
     response = await authorized_client.patch(
-        f"/v1/articles/1", json={"title": new_title}
+        "/v1/articles/1", json={"title": new_title}
     )
     assert response.status_code == 404
 
